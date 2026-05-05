@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Aniket Patil — Senior Software Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --green: #00ff88;
+    --cyan: #00e5ff;
+    --purple: #7c3aed;
+    --dark: #060a10;
+    --dark2: #0d1117;
+    --dark3: #161b27;
+    --card: #111827;
+    --border: rgba(0,255,136,0.15);
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-head: 'Syne', sans-serif;
+    --font-body: 'Inter', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+  }
+
+  /* ──── CANVAS BACKGROUND ──── */
+  #matrix-bg {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0; opacity: 0.07;
+    pointer-events: none;
+  }
+
+  /* ──── GRID OVERLAY ──── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 0; pointer-events: none;
+  }
+
+  /* ──── NAV ──── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 3rem;
+    height: 64px;
+    background: rgba(6,10,16,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--font-mono);
+    color: var(--green);
+    font-size: 1.05rem;
+    letter-spacing: 0.05em;
+  }
+  .nav-logo span { color: var(--cyan); }
+
+  .nav-links {
+    display: flex; gap: 2rem; list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::before {
+    content: '> ';
+    color: var(--green);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .nav-links a:hover { color: var(--green); }
+  .nav-links a:hover::before { opacity: 1; }
+
+  .nav-cta {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    padding: 0.45rem 1.1rem;
+    border: 1px solid var(--green);
+    color: var(--green);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: all 0.2s;
+  }
+  .nav-cta:hover { background: var(--green); color: var(--dark); }
+
+  /* ──── SECTIONS COMMON ──── */
+  section {
+    position: relative; z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 7rem 2rem;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--green);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+
+  .section-title {
+    font-family: var(--font-head);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 3.5rem;
+    line-height: 1.1;
+  }
+
+  .section-title span { color: var(--green); }
+
+  /* ──── HERO ──── */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding-top: 80px;
+    max-width: 100%;
+  }
+
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .hero-tag {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--green);
+    letter-spacing: 0.15em;
+    margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 32px; height: 1px;
+    background: var(--green);
+  }
+
+  .hero-name {
+    font-family: var(--font-head);
+    font-size: clamp(3.2rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.0;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-name .last { color: var(--green); }
+
+  .hero-title {
+    font-family: var(--font-mono);
+    font-size: clamp(1rem, 2vw, 1.35rem);
+    color: var(--cyan);
+    margin-bottom: 1.8rem;
+    min-height: 2em;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 2px; height: 1.2em;
+    background: var(--cyan);
+    vertical-align: text-bottom;
+    animation: blink 0.75s step-end infinite;
+    margin-left: 2px;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .hero-summary {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--muted);
+    max-width: 560px;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-btns {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .btn-primary {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    padding: 0.75rem 1.8rem;
+    background: var(--green);
+    color: var(--dark);
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    transition: all 0.2s;
+    border: 1px solid var(--green);
+  }
+  .btn-primary:hover { background: transparent; color: var(--green); }
+
+  .btn-secondary {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    padding: 0.75rem 1.8rem;
+    background: transparent;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--green); color: var(--green); }
+
+  .hero-stats {
+    display: flex; gap: 3rem;
+  }
+
+  .stat-val {
+    font-family: var(--font-head);
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--green);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0.2rem;
+  }
+
+  /* Photo card */
+  .hero-photo-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .photo-card {
+    width: 220px; height: 260px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    background: var(--card);
+  }
+
+  .photo-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(0,255,136,0.08), rgba(0,229,255,0.04));
+    z-index: 1;
+  }
+
+  .photo-card img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .photo-card .photo-placeholder {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 0.5rem;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .photo-card .photo-placeholder svg {
+    width: 48px; height: 48px;
+    stroke: var(--green);
+    opacity: 0.5;
+  }
+
+  .photo-corner {
+    position: absolute;
+    width: 16px; height: 16px;
+    border-color: var(--green);
+    border-style: solid;
+  }
+  .photo-corner.tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+  .photo-corner.tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
+  .photo-corner.bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
+  .photo-corner.br { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+  .social-links {
+    display: flex; gap: 0.8rem;
+  }
+
+  .social-link {
+    width: 36px; height: 36px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none;
+    color: var(--muted);
+    transition: all 0.2s;
+    font-size: 0.85rem;
+  }
+  .social-link:hover { border-color: var(--green); color: var(--green); }
+
+  /* ──── ABOUT / TERMINAL ──── */
+  .terminal-block {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+
+  .terminal-header {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .t-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+  .t-dot.red { background: #ff5f57; }
+  .t-dot.yellow { background: #febc2e; }
+  .t-dot.green { background: #28c840; }
+
+  .terminal-title {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-left: 0.3rem;
+  }
+
+  .terminal-body {
+    padding: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.8;
+  }
+
+  .t-prompt { color: var(--green); }
+  .t-cmd { color: var(--cyan); }
+  .t-out { color: var(--text); }
+  .t-comment { color: var(--muted); }
+  .t-val { color: #fbbf24; }
+  .t-str { color: #f472b6; }
+
+  /* ──── EXPERIENCE ──── */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--green), rgba(0,255,136,0.05));
+  }
+
+  .exp-card {
+    position: relative;
+    margin-bottom: 3.5rem;
+    padding: 1.8rem 2rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .exp-card:hover {
+    border-color: rgba(0,255,136,0.4);
+    transform: translateX(4px);
+  }
+
+  .exp-card::before {
+    content: '';
+    position: absolute;
+    left: -2.55rem; top: 1.8rem;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--green);
+    border: 2px solid var(--dark);
+    box-shadow: 0 0 10px var(--green);
+  }
+
+  .exp-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .exp-role {
+    font-family: var(--font-head);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .exp-badge {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    padding: 0.2rem 0.7rem;
+    background: rgba(0,255,136,0.1);
+    color: var(--green);
+    border: 1px solid rgba(0,255,136,0.2);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .exp-company {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--cyan);
+    margin-bottom: 0.2rem;
+  }
+
+  .exp-period {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.05em;
+  }
+
+  .exp-duties {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 0.6rem;
+  }
+
+  .exp-duties li {
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.65;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+  .exp-duties li::before {
+    content: '▹';
+    position: absolute; left: 0;
+    color: var(--green);
+    font-size: 0.8rem;
+  }
+
+  .exp-tags {
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+    margin-top: 1.2rem;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 0.15rem 0.6rem;
+    background: rgba(124,58,237,0.12);
+    color: #a78bfa;
+    border: 1px solid rgba(124,58,237,0.2);
+    letter-spacing: 0.05em;
+  }
+
+  /* ──── SKILLS ──── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .skill-group {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    transition: border-color 0.3s;
+  }
+  .skill-group:hover { border-color: rgba(0,255,136,0.35); }
+
+  .skill-group-title {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--green);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .skill-group-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .skill-bars { display: flex; flex-direction: column; gap: 0.9rem; }
+
+  .skill-bar-item { }
+  .skill-bar-top {
+    display: flex; justify-content: space-between;
+    margin-bottom: 0.3rem;
+  }
+  .skill-bar-name {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text);
+  }
+  .skill-bar-pct {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--green);
+  }
+  .skill-bar-track {
+    height: 3px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .skill-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), var(--cyan));
+    border-radius: 2px;
+    width: 0;
+    transition: width 1.2s ease;
+  }
+
+  /* pill tags for soft skills */
+  .pill-cloud {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+  }
+  .pill {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    transition: all 0.2s;
+  }
+  .pill:hover { border-color: var(--green); color: var(--green); }
+
+  /* ──── EDUCATION ──── */
+  .edu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .edu-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 1.6rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .edu-card:hover { border-color: rgba(0,229,255,0.4); transform: translateY(-3px); }
+
+  .edu-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--cyan), transparent);
+  }
+
+  .edu-degree {
+    font-family: var(--font-head);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.3rem;
+  }
+  .edu-inst {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--cyan);
+    margin-bottom: 0.5rem;
+  }
+  .edu-year {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+  }
+  .edu-score {
+    font-family: var(--font-head);
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--green);
+  }
+  .edu-score-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* ──── CONTACT ──── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .contact-item {
+    display: flex; gap: 1rem; align-items: flex-start;
+    padding: 1.2rem;
+    border: 1px solid var(--border);
+    background: var(--card);
+    margin-bottom: 1rem;
+    transition: border-color 0.3s;
+    text-decoration: none;
+  }
+  .contact-item:hover { border-color: var(--green); }
+
+  .contact-icon {
+    width: 36px; height: 36px;
+    background: rgba(0,255,136,0.1);
+    border: 1px solid rgba(0,255,136,0.2);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--green);
+    flex-shrink: 0;
+  }
+
+  .contact-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+  }
+  .contact-val {
+    font-size: 0.9rem;
+    color: var(--text);
+  }
+
+  /* ──── FOOTER ──── */
+  footer {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+  footer span { color: var(--green); }
+
+  /* ──── SCROLL ANIMATIONS ──── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ──── SCROLLBAR ──── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--dark2); }
+  ::-webkit-scrollbar-thumb { background: var(--green); }
+
+  /* ──── MOBILE ──── */
+  @media (max-width: 768px) {
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-photo-wrap { order: -1; }
+    .photo-card { width: 150px; height: 180px; margin: 0 auto; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 1.5rem; }
+  }
+
+  /* ──── GLITCH ──── */
+  .glitch {
+    position: relative;
+  }
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute; left: 2px; top: 0;
+    color: var(--cyan);
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+    animation: glitch-anim 4s infinite;
+  }
+  @keyframes glitch-anim {
+    0%, 90%, 100% { opacity: 0; }
+    91% { opacity: 0.6; transform: translateX(-3px); clip-path: inset(20% 0 60% 0); }
+    92% { opacity: 0.6; transform: translateX(3px); clip-path: inset(60% 0 10% 0); }
+    94% { opacity: 0; }
+  }
+
+  /* inline section divider */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* current badge */
+  .current-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    padding: 0.15rem 0.5rem;
+    background: rgba(0,255,136,0.12);
+    color: var(--green);
+    border: 1px solid var(--green);
+    letter-spacing: 0.1em;
+    vertical-align: middle;
+    margin-left: 0.5rem;
+    animation: pulse-border 2s infinite;
+  }
+  @keyframes pulse-border {
+    50% { border-color: rgba(0,255,136,0.3); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Matrix Canvas -->
+<canvas id="matrix-bg"></canvas>
+
+<!-- ──── NAV ──── -->
+<nav>
+  <div class="nav-logo"><span>&lt;</span>aniket.patil<span>/&gt;</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="https://linkedin.com/in/aniket-patil" target="_blank" class="nav-cta">LinkedIn ↗</a>
+</nav>
+
+<!-- ──── HERO ──── -->
+<div id="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-tag">Available for Senior Roles</div>
+      <h1 class="hero-name glitch" data-text="ANIKET PATIL">
+        ANIKET<br><span class="last">PATIL</span>
+      </h1>
+      <div class="hero-title" id="typed-title"><span class="cursor"></span></div>
+      <p class="hero-summary">
+        A results-driven software developer with <strong style="color:#fff">5+ years</strong> of hands-on experience building scalable enterprise applications and APIs. Expert in the <strong style="color:#fff">C#/.NET ecosystem</strong>, modern <strong style="color:#fff">Angular</strong> development, and cloud-ready architecture — passionate about clean code, performance, and impactful software.
+      </p>
+      <div class="hero-btns">
+        <a href="#experience" class="btn-primary">View My Work</a>
+        <a href="#contact" class="btn-secondary">Get In Touch</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-val">5+</div>
+          <div class="stat-label">Years Exp.</div>
+        </div>
+        <div>
+          <div class="stat-val">3</div>
+          <div class="stat-label">Companies</div>
+        </div>
+        <div>
+          <div class="stat-val">20+</div>
+          <div class="stat-label">Technologies</div>
+        </div>
+        <div>
+          <div class="stat-val">∞</div>
+          <div class="stat-label">Coffee Cups</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Photo -->
+    <div class="hero-photo-wrap">
+      <div class="photo-card">
+        <div class="photo-corner tl"></div>
+        <div class="photo-corner tr"></div>
+        <div class="photo-corner bl"></div>
+        <div class="photo-corner br"></div>
+        <!-- Replace the placeholder below with your photo:
+             <img src="your-photo.jpg" alt="Aniket Patil" />
+        -->
+        <div class="photo-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
+          <span>Upload your photo here</span>
+          <span style="color:rgba(100,116,139,0.6);font-size:0.6rem">Replace src in &lt;img&gt; tag</span>
+        </div>
+      </div>
+      <div class="social-links">
+        <a href="https://linkedin.com/in/aniket-patil" target="_blank" class="social-link" title="LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="mailto:patilaniket8670@gmail.com" class="social-link" title="Email">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+        <a href="tel:+919028717469" class="social-link" title="Phone">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.84a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ──── ABOUT ──── -->
+<section id="about">
+  <div class="section-label fade-in">// who I am</div>
+  <h2 class="section-title fade-in">About <span>Me</span></h2>
+
+  <div class="terminal-block fade-in">
+    <div class="terminal-header">
+      <span class="t-dot red"></span>
+      <span class="t-dot yellow"></span>
+      <span class="t-dot green"></span>
+      <span class="terminal-title">~/aniket $ cat profile.json</span>
+    </div>
+    <div class="terminal-body">
+      <div><span class="t-prompt">$ </span><span class="t-cmd">whoami</span></div>
+      <div class="t-out" style="padding-left:1rem;margin-bottom:1rem;">Aniket Patil — Senior Software Developer @ Yardi Software India</div>
+
+      <div><span class="t-prompt">$ </span><span class="t-cmd">cat summary.txt</span></div>
+      <div class="t-out" style="padding-left:1rem;margin:0.5rem 0;">
+        A seasoned software developer with <span class="t-val">5+ years</span> of hands-on experience in <span class="t-str">C#/.NET</span> technologies.<br/>
+        Proficient in the full SDLC using <span class="t-val">Agile/Scrum</span> methodologies. Expert in building robust web<br/>
+        applications and REST APIs using <span class="t-str">ASP.NET MVC</span>, <span class="t-str">Web API</span>, and <span class="t-str">Entity Framework Core</span>.<br/>
+        Extensive front-end experience with <span class="t-val">Angular 13–18</span>, and proficiency in modern JavaScript.<br/>
+        Strong command of <span class="t-str">OOP</span>, <span class="t-str">SOLID principles</span>, <span class="t-str">Design Patterns</span>, and <span class="t-str">Microservices</span> architecture.
+      </div>
+
+      <div style="margin-top:1rem;"><span class="t-prompt">$ </span><span class="t-cmd">echo $LOCATION</span></div>
+      <div class="t-out" style="padding-left:1rem;">441, E Ward, Kasaba Bawada, Kolhapur, Maharashtra</div>
+
+      <div style="margin-top:0.5rem;"><span class="t-prompt">$ </span><span class="t-cmd">echo $STATUS</span></div>
+      <div style="padding-left:1rem;color:#00ff88;">● Open to senior opportunities</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ──── EXPERIENCE ──── -->
+<section id="experience">
+  <div class="section-label fade-in">// where I've worked</div>
+  <h2 class="section-title fade-in">Professional <span>Experience</span></h2>
+
+  <div class="timeline">
+
+    <!-- Yardi -->
+    <div class="exp-card fade-in">
+      <div class="exp-top">
+        <div class="exp-role">Senior Software Analyst <span class="current-badge">CURRENT</span></div>
+        <div class="exp-badge">MARCH 2023 – PRESENT</div>
+      </div>
+      <div class="exp-company">Yardi Software India Pvt Ltd · Kolhapur</div>
+      <div class="exp-period">↳ 2+ years | Full-time</div>
+      <ul class="exp-duties">
+        <li>Engineered reusable, modular component libraries shared across multiple enterprise products, reducing duplication and boosting cross-team development efficiency by ~40%.</li>
+        <li>Designed and developed fully customizable data export services supporting Excel, PDF, and CSV formats — meeting diverse business reporting and compliance needs for global clients.</li>
+        <li>Single-handedly managed and executed the Angular framework migration from <strong>Angular 13 → Angular 18</strong>, ensuring zero regression, improved performance, and long-term scalability.</li>
+        <li>Performed critical hotfixes directly in live production environments under strict SLA windows, minimizing downtime and reducing user-impacting incidents.</li>
+        <li>Participated actively in Agile sprint ceremonies — story point estimation, sprint planning, retrospectives, and daily standups with cross-functional teams.</li>
+        <li>Collaborated with senior architects to define API contracts and reviewed pull requests to maintain code quality and adherence to SOLID principles.</li>
+        <li>Optimized slow-running SQL queries and Entity Framework LINQ expressions, improving dashboard load times for data-heavy reporting modules.</li>
+        <li>Implemented lazy loading, route guards, and Angular interceptors to enhance application security and performance across the platform.</li>
+      </ul>
+      <div class="exp-tags">
+        <span class="tag">C# .NET</span>
+        <span class="tag">Angular 18</span>
+        <span class="tag">ASP.NET Web API</span>
+        <span class="tag">Entity Framework</span>
+        <span class="tag">SQL Server</span>
+        <span class="tag">TypeScript</span>
+        <span class="tag">TFS</span>
+        <span class="tag">Agile/Scrum</span>
+      </div>
+    </div>
+
+    <!-- NEC -->
+    <div class="exp-card fade-in">
+      <div class="exp-top">
+        <div class="exp-role">Software Developer</div>
+        <div class="exp-badge">OCT 2022 – FEB 2023</div>
+      </div>
+      <div class="exp-company">NEC Software Solutions · Remote</div>
+      <div class="exp-period">↳ 5 months | Full-time</div>
+      <ul class="exp-duties">
+        <li>Managed and delivered across multiple concurrent client-facing application modules, ensuring all deliverables met functional requirements and quality benchmarks.</li>
+        <li>Executed comprehensive bug-fix cycles and unit testing for legacy .NET applications, reducing reported defect rates significantly post-release.</li>
+        <li>Handled end-to-end deployment of software packages across Dev, QA, UAT, and Production environments following defined release processes.</li>
+        <li>Contributed to technical estimation sessions for Agile user stories, improving sprint velocity accuracy through detailed breakdown and analysis.</li>
+        <li>Liaised with client stakeholders to understand and translate functional requirements into precise technical specifications.</li>
+      </ul>
+      <div class="exp-tags">
+        <span class="tag">C# .NET</span>
+        <span class="tag">ASP.NET MVC</span>
+        <span class="tag">Unit Testing</span>
+        <span class="tag">SQL Server</span>
+        <span class="tag">Git</span>
+        <span class="tag">CI/CD</span>
+      </div>
+    </div>
+
+    <!-- Virtusky -->
+    <div class="exp-card fade-in">
+      <div class="exp-top">
+        <div class="exp-role">Software Developer</div>
+        <div class="exp-badge">JUNE 2020 – OCT 2022</div>
+      </div>
+      <div class="exp-company">Virtusky IT Pvt. Ltd. · Kolhapur</div>
+      <div class="exp-period">↳ 2 years 5 months | Full-time</div>
+      <ul class="exp-duties">
+        <li>Collaborated with cross-functional teams including Project Managers, Product Managers, QA Engineers, and Developers to define testing strategies and engineering best practices from the ground up.</li>
+        <li>Translated complex client requirements into actionable application designs and detailed system requirement documents, bridging the gap between business needs and technical implementation.</li>
+        <li>Built and maintained multiple web applications using <strong>ASP.NET MVC</strong> and <strong>Angular</strong>, handling everything from UI design to backend API integration.</li>
+        <li>Provided first-line troubleshooting and remediation for production web applications, ensuring high availability and rapid resolution of critical issues.</li>
+        <li>Wrote maintainable ADO.NET data access layers and stored procedures, laying a solid data-access foundation for new features.</li>
+        <li>Mentored junior developers on coding standards, OOP best practices, and SOLID design principles within the team.</li>
+      </ul>
+      <div class="exp-tags">
+        <span class="tag">ASP.NET MVC</span>
+        <span class="tag">Angular</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">ADO.NET</span>
+        <span class="tag">jQuery</span>
+        <span class="tag">Bootstrap</span>
+        <span class="tag">Git</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ──── SKILLS ──── -->
+<section id="skills">
+  <div class="section-label fade-in">// what I bring</div>
+  <h2 class="section-title fade-in">Technical <span>Skills</span></h2>
+
+  <div class="skills-grid">
+
+    <!-- Backend -->
+    <div class="skill-group fade-in">
+      <div class="skill-group-title">Backend & APIs</div>
+      <div class="skill-bars">
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">C# / .NET 6–8</span><span class="skill-bar-pct">92%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="92"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">ASP.NET MVC / Web API</span><span class="skill-bar-pct">90%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="90"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">Entity Framework Core</span><span class="skill-bar-pct">85%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="85"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">REST API Design</span><span class="skill-bar-pct">88%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">ADO.NET</span><span class="skill-bar-pct">82%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="82"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">Microservices Architecture</span><span class="skill-bar-pct">70%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="70"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Frontend -->
+    <div class="skill-group fade-in">
+      <div class="skill-group-title">Frontend</div>
+      <div class="skill-bars">
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">Angular 13–18</span><span class="skill-bar-pct">88%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">TypeScript</span><span class="skill-bar-pct">85%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="85"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">JavaScript / ES6+</span><span class="skill-bar-pct">82%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="82"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">HTML5 / CSS3 / Bootstrap</span><span class="skill-bar-pct">88%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">jQuery / Ajax</span><span class="skill-bar-pct">78%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="78"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">RxJS / NgRx</span><span class="skill-bar-pct">72%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="72"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Database -->
+    <div class="skill-group fade-in">
+      <div class="skill-group-title">Database</div>
+      <div class="skill-bars">
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">SQL Server 2019 (SSMS)</span><span class="skill-bar-pct">87%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="87"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">T-SQL / Stored Procedures</span><span class="skill-bar-pct">82%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="82"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">Query Optimization</span><span class="skill-bar-pct">78%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="78"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">Database Design / ERD</span><span class="skill-bar-pct">75%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="75"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DevOps & Tools -->
+    <div class="skill-group fade-in">
+      <div class="skill-group-title">DevOps & Tools</div>
+      <div class="skill-bars">
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">Git / GitHub</span><span class="skill-bar-pct">88%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">TFS (Azure DevOps)</span><span class="skill-bar-pct">82%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="82"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">CI/CD Pipelines</span><span class="skill-bar-pct">70%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="70"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">Docker (Fundamentals)</span><span class="skill-bar-pct">55%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="55"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">Azure (Fundamentals)</span><span class="skill-bar-pct">50%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="50"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Architecture -->
+    <div class="skill-group fade-in">
+      <div class="skill-group-title">Architecture & Principles</div>
+      <div class="pill-cloud">
+        <span class="pill">OOP</span>
+        <span class="pill">SOLID Principles</span>
+        <span class="pill">Design Patterns</span>
+        <span class="pill">MVC Pattern</span>
+        <span class="pill">Repository Pattern</span>
+        <span class="pill">Dependency Injection</span>
+        <span class="pill">Microservices</span>
+        <span class="pill">RESTful APIs</span>
+        <span class="pill">Clean Architecture</span>
+        <span class="pill">CQRS</span>
+        <span class="pill">Domain Driven Design</span>
+        <span class="pill">Unit Testing</span>
+      </div>
+    </div>
+
+    <!-- Soft Skills -->
+    <div class="skill-group fade-in">
+      <div class="skill-group-title">Professional Skills</div>
+      <div class="pill-cloud">
+        <span class="pill">Agile / Scrum</span>
+        <span class="pill">Sprint Planning</span>
+        <span class="pill">Code Review</span>
+        <span class="pill">Technical Documentation</span>
+        <span class="pill">Story Estimation</span>
+        <span class="pill">Cross-team Collaboration</span>
+        <span class="pill">Production Support</span>
+        <span class="pill">Mentoring</span>
+        <span class="pill">Problem Solving</span>
+        <span class="pill">Client Communication</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ──── EDUCATION ──── -->
+<section id="education">
+  <div class="section-label fade-in">// where I studied</div>
+  <h2 class="section-title fade-in">Educational <span>Background</span></h2>
+
+  <div class="edu-grid">
+    <div class="edu-card fade-in">
+      <div class="edu-degree">BE in Mechanical Engineering</div>
+      <div class="edu-inst">D.Y. Patil College of Engineering & Technology, Kolhapur</div>
+      <div class="edu-year">Graduated 2020</div>
+      <div class="edu-score">80.19%</div>
+      <div class="edu-score-label">AGGREGATE PERCENTAGE</div>
+    </div>
+
+    <div class="edu-card fade-in">
+      <div class="edu-degree">Diploma in Mechanical Engineering</div>
+      <div class="edu-inst">Dr. D.Y. Patil Polytechnic, Kolhapur</div>
+      <div class="edu-year">Graduated 2017</div>
+      <div class="edu-score">81.71%</div>
+      <div class="edu-score-label">AGGREGATE PERCENTAGE</div>
+    </div>
+
+    <div class="edu-card fade-in">
+      <div class="edu-degree">SSC (10th Standard)</div>
+      <div class="edu-inst">Chatrapati Rajaram High School, Kolhapur</div>
+      <div class="edu-year">Completed</div>
+      <div class="edu-score">81.40%</div>
+      <div class="edu-score-label">AGGREGATE PERCENTAGE</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ──── CONTACT ──── -->
+<section id="contact">
+  <div class="section-label fade-in">// let's connect</div>
+  <h2 class="section-title fade-in">Get In <span>Touch</span></h2>
+
+  <div class="contact-grid">
+    <div>
+      <p style="color:var(--muted);font-size:0.95rem;line-height:1.8;margin-bottom:2rem;">
+        I'm always open to discussing new opportunities, interesting projects, or just talking tech. Drop me a message and I'll get back to you!
+      </p>
+
+      <a href="mailto:patilaniket8670@gmail.com" class="contact-item" style="display:flex;">
+        <div class="contact-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-val">patilaniket8670@gmail.com</div>
+        </div>
+      </a>
+
+      <a href="tel:+919028717469" class="contact-item" style="display:flex;text-decoration:none;">
+        <div class="contact-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.84a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Phone</div>
+          <div class="contact-val">+91 90287 17469</div>
+        </div>
+      </a>
+
+      <a href="https://linkedin.com/in/aniket-patil" target="_blank" class="contact-item" style="display:flex;text-decoration:none;">
+        <div class="contact-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">LinkedIn</div>
+          <div class="contact-val">linkedin.com/in/aniket-patil</div>
+        </div>
+      </a>
+
+      <div class="contact-item" style="display:flex;">
+        <div class="contact-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Location</div>
+          <div class="contact-val">Kolhapur, Maharashtra, India</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Terminal message block -->
+    <div class="terminal-block fade-in" style="height:fit-content;">
+      <div class="terminal-header">
+        <span class="t-dot red"></span>
+        <span class="t-dot yellow"></span>
+        <span class="t-dot green"></span>
+        <span class="terminal-title">~/contact $ send-message.sh</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="t-prompt">$ </span><span class="t-cmd">echo</span> <span class="t-str">"Looking for a senior .NET + Angular developer?"</span></div>
+        <div class="t-out" style="padding-left:1rem;margin-bottom:0.8rem;">→ You're in the right place.</div>
+        <div><span class="t-prompt">$ </span><span class="t-cmd">check_availability</span></div>
+        <div style="padding-left:1rem;color:#00ff88;margin-bottom:0.8rem;">✓ Available for new opportunities</div>
+        <div><span class="t-prompt">$ </span><span class="t-cmd">specializations</span></div>
+        <div class="t-out" style="padding-left:1rem;">
+          → Enterprise .NET applications<br/>
+          → Angular SPA development<br/>
+          → API design & integration<br/>
+          → Framework migrations &amp; upgrades<br/>
+          → Production incident management
+        </div>
+        <div style="margin-top:1rem;"><span class="t-prompt">$ </span><span style="color:var(--cyan);">_</span><span class="cursor"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──── FOOTER ──── -->
+<footer>
+  <p>Designed & Built with ♥ by <span>Aniket Patil</span> · Senior Software Developer</p>
+  <p style="margin-top:0.4rem;font-size:0.65rem;">C# · .NET · Angular · SQL Server · Kolhapur, India</p>
+</footer>
+
+<script>
+// ──── MATRIX RAIN ────
+const canvas = document.getElementById('matrix-bg');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ01101001ABCDEF{}[]<>()=>./;*#';
+const fontSize = 13;
+let cols = Math.floor(window.innerWidth / fontSize);
+const drops = Array(cols).fill(1);
+
+function drawMatrix() {
+  ctx.fillStyle = 'rgba(6,10,16,0.05)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#00ff88';
+  ctx.font = fontSize + 'px JetBrains Mono, monospace';
+
+  cols = Math.floor(canvas.width / fontSize);
+  while (drops.length < cols) drops.push(1);
+
+  for (let i = 0; i < cols; i++) {
+    const char = chars[Math.floor(Math.random() * chars.length)];
+    ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+    drops[i]++;
+  }
+}
+
+setInterval(drawMatrix, 50);
+
+// ──── TYPING EFFECT ────
+const titles = [
+  'Senior Software Developer',
+  'C# / .NET Specialist',
+  'Angular Expert (v13–18)',
+  'Full Stack Engineer',
+  'API Architecture Enthusiast',
+];
+
+let tIdx = 0, cIdx = 0, deleting = false;
+const typedEl = document.getElementById('typed-title');
+
+function type() {
+  const current = titles[tIdx];
+  const cursor = '<span class="cursor"></span>';
+
+  if (!deleting) {
+    cIdx++;
+    typedEl.innerHTML = current.slice(0, cIdx) + cursor;
+    if (cIdx === current.length) {
+      setTimeout(() => { deleting = true; }, 2200);
+      setTimeout(type, 2300);
+      return;
+    }
+  } else {
+    cIdx--;
+    typedEl.innerHTML = current.slice(0, cIdx) + cursor;
+    if (cIdx === 0) {
+      deleting = false;
+      tIdx = (tIdx + 1) % titles.length;
+    }
+  }
+  setTimeout(type, deleting ? 45 : 85);
+}
+type();
+
+// ──── SCROLL ANIMATIONS ────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 60);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ──── SKILL BAR ANIMATION ────
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+        bar.style.width = bar.dataset.w + '%';
+      });
+      barObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.2 });
+
+document.querySelectorAll('.skill-group').forEach(g => barObserver.observe(g));
+
+// ──── NAV ACTIVE STATE ────
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 100) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + current
+      ? 'var(--green)' : '';
+  });
+});
+</script>
+</body>
+</html>
